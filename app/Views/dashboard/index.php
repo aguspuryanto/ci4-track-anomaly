@@ -183,4 +183,21 @@
 
     </div>
 
+    <!-- Menampilkan error jika ada -->
+    <?php if (isset($error)): ?>
+        <div class="alert alert-danger">
+            <?= esc($error) ?>
+        </div>
+    <?php endif; ?>
+
+    <!-- Menampilkan data events -->
+    <?php if (isset($events) && is_array($events)): ?>
+        <!-- Tampilkan data events disini -->
+        <div class="events-container">
+            <?php foreach ($events as $event): ?>
+                <!-- Format dan tampilkan setiap event -->
+            <?php endforeach; ?>
+        </div>
+    <?php endif; ?>
+
 <?= $this->endSection() ?>
