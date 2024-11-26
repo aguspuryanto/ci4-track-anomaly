@@ -8,7 +8,7 @@ use CodeIgniter\HTTP\Exceptions\HTTPException;
 class DashboardController extends BaseController
 {
     private CURLRequest $client;
-    private const API_URL = 'https://jontracking.com/func/fn_events.php';
+    private const API_URL = 'https://jontracking.com/';
 
     public function __construct()
     {
@@ -31,8 +31,9 @@ class DashboardController extends BaseController
                 'sidx' => 'dt_tracker',
                 'sord' => 'desc'
             ];
+            echo json_encode($params);
 
-            $response = $this->client->get('', [
+            $response = $this->client->get('func/fn_events.php', [
                 'query' => $params,
                 'headers' => [
                     'Accept' => 'application/json'
@@ -44,14 +45,16 @@ class DashboardController extends BaseController
                 'events' => json_decode($response->getBody(), true)
             ];
 
-            return view('dashboard/index', $data);
+            // return view('dashboard/index', $data);
 
         } catch (HTTPException $e) {
             log_message('error', '[Dashboard] API Error: ' . $e->getMessage());
-            return view('dashboard/index', [
+            $data = [
                 'title' => 'Dashboard',
                 'error' => 'Failed to fetch tracking data. Please try again later.'
-            ]);
+            ];
         }
+
+        return view('dashboard/index', $data);
     }
 }
