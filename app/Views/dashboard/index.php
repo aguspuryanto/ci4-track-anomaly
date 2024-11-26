@@ -3,11 +3,26 @@
 <?= $this->section('content') ?>
     <!-- <h1>Welcome to the Dashboard, <?= session()->get('user') ?>!</h1>
     <a href="/logout" class="btn btn-danger mt-3">Logout</a> -->
+
+    <!-- Menampilkan error jika ada -->
+    <?php if (isset($error)): ?>
+        <div class="alert alert-danger">
+            <?= json_encode($error) ?>
+        </div>
+    <?php endif; ?>
+
+    <!-- Menampilkan data events -->
+    <?php if (isset($events) && is_array($events)): ?>
+        <!-- Tampilkan data events disini -->
+        <div class="events-container">
+            <?php foreach ($events as $event): ?>
+                <!-- Format dan tampilkan setiap event -->
+            <?php endforeach; ?>
+        </div>
+    <?php endif; ?>
     
     <div class="xcontainer py-4">
         <!-- <h1 class="text-center mb-4">Project Anomaly Dashboard</h1>-->
-        <?php if(isset($error)) echo json_encode($error); ?>
-
         <!-- Driver 1 -->
          <?php for($i=0; $i <= 5; $i++) { ?>
         <div class="row mb-0">
@@ -184,22 +199,5 @@
         </div>
 
     </div>
-
-    <!-- Menampilkan error jika ada -->
-    <?php if (isset($error)): ?>
-        <div class="alert alert-danger">
-            <?= esc($error) ?>
-        </div>
-    <?php endif; ?>
-
-    <!-- Menampilkan data events -->
-    <?php if (isset($events) && is_array($events)): ?>
-        <!-- Tampilkan data events disini -->
-        <div class="events-container">
-            <?php foreach ($events as $event): ?>
-                <!-- Format dan tampilkan setiap event -->
-            <?php endforeach; ?>
-        </div>
-    <?php endif; ?>
 
 <?= $this->endSection() ?>

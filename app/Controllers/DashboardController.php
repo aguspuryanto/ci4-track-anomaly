@@ -33,12 +33,16 @@ class DashboardController extends BaseController
             ];
             echo json_encode($params);
 
-            $response = $this->client->get('func/fn_events.php', [
-                'query' => $params,
-                'headers' => [
-                    'Accept' => 'application/json'
-                ]
-            ]);
+            // $response = $this->client->get('func/fn_events.php', [
+            //     'query' => $params,
+            //     'headers' => [
+            //         'Accept' => 'application/json'
+            //     ]
+            // ]);
+
+            $client = service('curlrequest');
+
+            $response = $client->request('GET', 'https://dummyapi.online/api/movies');
 
             $data = [
                 'title' => 'Dashboard',
