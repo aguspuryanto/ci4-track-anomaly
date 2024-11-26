@@ -42,7 +42,7 @@ class DashboardController extends BaseController
 
             $data = [
                 'title' => 'Dashboard',
-                'events' => json_decode($response->getBody(), true)
+                'error' => json_decode($response->getBody(), true)
             ];
 
             // return view('dashboard/index', $data);

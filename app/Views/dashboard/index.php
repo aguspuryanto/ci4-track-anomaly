@@ -6,8 +6,8 @@
     
     <div class="xcontainer py-4">
         <!-- <h1 class="text-center mb-4">Project Anomaly Dashboard</h1>-->
-        <?php echo json_encode($error); ?>
-        
+        <?php if(isset($error)) echo json_encode($error); ?>
+
         <!-- Driver 1 -->
          <?php for($i=0; $i <= 5; $i++) { ?>
         <div class="row mb-0">
