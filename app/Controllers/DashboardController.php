@@ -8,8 +8,7 @@ use CodeIgniter\HTTP\Exceptions\HTTPException;
 class DashboardController extends BaseController
 {
     private CURLRequest $client;
-    private const API_URL = 'http://localhost/jontracking/';
-
+    private const API_URL = 'https://jontracking.com/';
     public function __construct()
     {
         $this->client = \Config\Services::curlrequest([
@@ -28,15 +27,15 @@ class DashboardController extends BaseController
             if($doLogin) {
                 $params = [
                     'api' => 'user',
-                    'key' => '7E57D1A4B49617344FDFB59FD205E96C',
+                    'key' => $_ENV['API_KEY'],
                     'cmd' => 'user_get_objects'
                 ];
 
-                // $urlTo = self::API_URL . "api/api.php?" . http_build_query($params);
+                $urlTo = self::API_URL . "api/api.php?" . http_build_query($params);
                 // echo $urlTo . "\n";
-                // $response = $this->fetchData($urlTo);
+                $response = $this->fetchData($urlTo);
 
-                $response = file_get_contents(FCPATH . '/assets/data/event.json');
+                // $response = file_get_contents(FCPATH . '/assets/data/event.json');
                 // echo var_dump($response);
                 $responseJson = json_decode($response, true);
                 $newObjects = [];
