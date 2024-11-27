@@ -27,6 +27,7 @@ class DashboardController extends BaseController
                 'username' => 'internal',
                 'password' => 230191
             ];
+            echo json_encode($params);
 
             $urlTo = self::API_URL . "login.php?" . http_build_query($params);
             $response = $this->fetchData($urlTo);
@@ -109,15 +110,17 @@ class DashboardController extends BaseController
             ];
             // echo print_r($data);
 
-            return view('dashboard/index', $data);
+            // return view('dashboard/index', $data);
 
         } catch (HTTPException $e) {
             log_message('error', '[Dashboard] API Error: ' . $e->getMessage());
-            return view('dashboard/index', [
+            $data = [
                 'title' => 'Dashboard',
                 'error' => 'Failed to fetch tracking data. Please try again later.'
-            ]);
+            ];
         }
+
+        return view('dashboard/index', $data);
     }
 
     function fetchData($url) {

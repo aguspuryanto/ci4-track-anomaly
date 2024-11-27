@@ -1,12 +1,6 @@
 <?= $this->extend('layouts/main') ?>
 
-<?= $this->section('content') ?>
-    <!-- <h1>Welcome to the Dashboard, <?= session()->get('user') ?>!</h1>
-    <a href="/logout" class="btn btn-danger mt-3">Logout</a> -->
-    <?php 
-    // $dataObjects = (json_decode($objects, true));
-    ?>
-    
+<?= $this->section('content') ?>    
     <div class="xcontainer py-4">
         <!-- <h1 class="text-center mb-4">Project Anomaly Dashboard</h1>-->
         <!-- Menampilkan error jika ada -->
