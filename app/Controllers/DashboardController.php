@@ -8,7 +8,7 @@ use CodeIgniter\HTTP\Exceptions\HTTPException;
 class DashboardController extends BaseController
 {
     private CURLRequest $client;
-    private const API_URL = 'https://jontracking.com/func/fn_events.php';
+    private const API_URL = 'http://localhost/jontracking/';
 
     public function __construct()
     {
@@ -22,27 +22,92 @@ class DashboardController extends BaseController
     public function index()
     {
         try {
+            // http://localhost/jontracking/login.php?username=internal&password=230191
             $params = [
-                'cmd' => 'load_event_list',
-                'nd' => time(),
-                '_search' => 'false',
-                'rows' => 25,
-                'page' => 1,
-                'sidx' => 'dt_tracker',
-                'sord' => 'desc'
+                'username' => 'internal',
+                'password' => 230191
             ];
 
-            $response = $this->client->get('', [
-                'query' => $params,
-                'headers' => [
-                    'Accept' => 'application/json'
-                ]
-            ]);
+            $urlTo = self::API_URL . "login.php?" . http_build_query($params);
+            $response = $this->fetchData($urlTo);
+            // echo var_dump($response);
+            // Split into lines
+            $lines = explode("\n", $response);
+            foreach($lines as $num => $line){
+                // echo $line . "<br />\n";
+            }
+
+            if($response) {
+                $params = [
+                    'api' => 'user',
+                    'key' => '7E57D1A4B49617344FDFB59FD205E96C',
+                    'cmd' => 'user_get_objects'
+                ];
+
+                // $urlTo = self::API_URL . "api/api.php?" . http_build_query($params);
+                // echo $urlTo . "\n";
+                // $response = $this->fetchData($urlTo);
+
+                $response = file_get_contents(FCPATH . '/assets/data/event.json');
+                // echo var_dump($response);
+                $responseJson = json_decode($response, true);
+                $newObjects = [];
+                foreach( $responseJson as $key => $object ) {
+                    // echo "Driver Info Plate: " . $object['plate_number'] . "<br />\n";
+                    $newObjects[$key] = $object;
+                    $newObjects[$key]['timeline'] = [
+                        [
+                            'location' => 'Start Point',
+                            'scheduled_time' => '2024-11-05 08:28:46',
+                            'status' => 'On Time',
+                            'actual_time' => '2024-11-05 08:48:26',
+                        ],
+                        [
+                            'location' => 'Location A',
+                            'scheduled_time' => '2024-11-05 10:30:46',
+                            'status' => 'On Time',
+                            'actual_time' => '2024-11-05 10:30:26',
+                        ],
+                        [
+                            'location' => 'Location B',
+                            'scheduled_time' => '2024-11-05 12:10:46',
+                            'status' => 'On Time',
+                            'actual_time' => '2024-11-05 12:10:26',
+                        ],
+                        [
+                            'location' => 'Location C',
+                            'scheduled_time' => '2024-11-05 13:00:46',
+                            'status' => 'On Time',
+                            'actual_time' => '2024-11-05 13:00:26',
+                        ],
+                        [
+                            'location' => 'Location D',
+                            'scheduled_time' => '2024-11-05 14:00:46',
+                            'status' => 'On Time',
+                            'actual_time' => '2024-11-05 14:00:26',
+                        ],
+                        [
+                            'location' => 'Location E',
+                            'scheduled_time' => '2024-11-05 14:30:46',
+                            'status' => 'On Time',
+                            'actual_time' => '2024-11-05 14:30:26',
+                        ],
+                        [
+                            'location' => 'End Point',
+                            'scheduled_time' => '2024-11-05 21:00:46',
+                            'status' => 'On Time',
+                            'actual_time' => '2024-11-05 21:00:26',
+                        ]
+                    ];
+                }
+            }
+            // echo json_encode($newObjects);
 
             $data = [
                 'title' => 'Dashboard',
-                'events' => json_decode($response->getBody(), true)
+                'dataObjects' => ($newObjects)
             ];
+            // echo print_r($data);
 
             return view('dashboard/index', $data);
 
@@ -53,5 +118,37 @@ class DashboardController extends BaseController
                 'error' => 'Failed to fetch tracking data. Please try again later.'
             ]);
         }
+    }
+
+    function fetchData($url) {
+        $cookieFilePath = ROOTPATH . 'cookie.txt';
+
+        // Initialize cURL session
+        $ch = curl_init();
+
+        // Set cURL options
+        curl_setopt_array($ch, [
+            CURLOPT_URL => $url,
+            CURLOPT_COOKIEJAR => $cookieFilePath,
+            CURLOPT_COOKIEFILE => $cookieFilePath,
+            CURLOPT_HEADER => false,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_FOLLOWLOCATION => true,
+        ]);
+
+        // Execute cURL request
+        $response = curl_exec($ch);
+
+        // Check for errors
+        if ($response === false) {
+            $errorMessage = curl_error($ch);
+            curl_close($ch);
+            // throw new Exception("cURL Error: $errorMessage");
+        }
+
+        // Close cURL session
+        curl_close($ch);
+
+        return $response;
     }
 }
