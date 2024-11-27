@@ -22,23 +22,10 @@ class DashboardController extends BaseController
     public function index()
     {
         try {
-            // http://localhost/jontracking/login.php?username=internal&password=230191
-            $params = [
-                'username' => 'internal',
-                'password' => 230191
-            ];
-            echo json_encode($params);
+            // Login
+            $doLogin = $this->doLogin();
 
-            $urlTo = self::API_URL . "login.php?" . http_build_query($params);
-            $response = $this->fetchData($urlTo);
-            // echo var_dump($response);
-            // Split into lines
-            $lines = explode("\n", $response);
-            foreach($lines as $num => $line){
-                // echo $line . "<br />\n";
-            }
-
-            if($response) {
+            if($doLogin) {
                 $params = [
                     'api' => 'user',
                     'key' => '7E57D1A4B49617344FDFB59FD205E96C',
@@ -91,7 +78,7 @@ class DashboardController extends BaseController
                             'location' => 'Location E',
                             'scheduled_time' => '2024-11-05 14:30:46',
                             'status' => 'On Time',
-                            'actual_time' => '2024-11-05 14:30:26',
+                            'actual_time' => '2024-11-05 14:32:26',
                         ],
                         [
                             'location' => 'End Point',
@@ -108,9 +95,6 @@ class DashboardController extends BaseController
                 'title' => 'Dashboard',
                 'dataObjects' => ($newObjects)
             ];
-            // echo print_r($data);
-
-            // return view('dashboard/index', $data);
 
         } catch (HTTPException $e) {
             log_message('error', '[Dashboard] API Error: ' . $e->getMessage());
@@ -123,6 +107,26 @@ class DashboardController extends BaseController
         return view('dashboard/index', $data);
     }
 
+    function doLogin() {
+        // http://localhost/jontracking/login.php?username=internal&password=230191
+        $params = [
+            'username' => 'internal',
+            'password' => 230191
+        ];
+        // echo json_encode($params);
+
+        $urlTo = self::API_URL . "login.php?" . http_build_query($params);
+        $response = $this->fetchData($urlTo);
+        // echo var_dump($response);
+        // Split into lines
+        $lines = explode("\n", $response);
+        foreach($lines as $num => $line){
+            // echo $line . "<br />\n";
+        }
+
+        return $response;
+    }
+    
     function fetchData($url) {
         $cookieFilePath = ROOTPATH . 'cookie.txt';
 

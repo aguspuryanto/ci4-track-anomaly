@@ -31,80 +31,25 @@
                     <div class="card mb-0 bg-secondary text-white">
                         <div class="card-body">
                             <div class="timeline mb-0 text-center">
-                                <!-- Start Point -->
+                                <?php foreach ($object['timeline'] as $event): ?>
                                 <div class="timeline-item">
-                                    <p>Start Point</p>
+                                    <p><?= esc($event['location']) ?></p>
                                     <div class="timeline-point"></div>
                                     <div class="hstack gap-2">
-                                        <span class="badge bg-secondary">08:00</span>
-                                        <div class="vr"></div>
-                                        <span class="badge bg-success">08:00</span>
+                                    <?php
+                                        $shouldHideBadge = ($event['location'] === 'End Point');
+                                        $scheduledTime = date('H:i', strtotime($event['scheduled_time']));
+                                        $actualedTime = date('H:i', strtotime($event['actual_time']));
+                                        $badgeClass = $shouldHideBadge ? 'd-none' : '';
+                                        $badgeStatus = ($scheduledTime == $actualedTime) ? 'bg-success' : 'bg-danger';
+                                        ?>
+                                        <span class="badge bg-secondary <?= $badgeClass; ?>"><?= $scheduledTime; ?></span>
+                                        <div class="vr <?= $badgeClass; ?>"></div>
+                                        <span class="badge <?= $badgeStatus; ?>"><?= $actualedTime; ?></span>
                                     </div>
                                 </div>
                                 <div class="timeline-bar"></div>
-                                <!-- Location A -->
-                                <div class="timeline-item">
-                                    <p>Location A</p>
-                                    <div class="timeline-point"></div>
-                                    <div class="hstack gap-2">
-                                        <span class="badge bg-secondary">10:30</span>
-                                        <div class="vr"></div>
-                                        <span class="badge status status-green">10:30</span>
-                                    </div>
-                                </div>
-                                <div class="timeline-bar"></div>
-                                <!-- Location B -->
-                                <div class="timeline-item">
-                                    <p>Location B</p>
-                                    <div class="timeline-point"></div>
-                                    <div class="hstack gap-2">
-                                        <span class="badge bg-secondary">12:10</span>
-                                        <div class="vr"></div>
-                                        <span class="badge status status-green">12:10</span>
-                                    </div>
-                                </div>
-                                <div class="timeline-bar"></div>
-                                <!-- Location C -->
-                                <div class="location-time">
-                                    <p>Location C</p>
-                                    <div class="timeline-point"></div>
-                                    <div class="hstack gap-2">
-                                        <span class="badge bg-secondary">13:00</span>
-                                        <div class="vr"></div>
-                                        <span class="badge status status-green">13:00</span>
-                                    </div>
-                                </div>
-                                <div class="timeline-bar"></div>
-                                <!-- Location D -->
-                                <div class="location-time">
-                                    <p>Location D</p>
-                                    <div class="timeline-point"></div>
-                                    <div class="hstack gap-2">
-                                        <span class="badge bg-secondary">14:00</span>
-                                        <div class="vr"></div>
-                                        <span class="badge bg-danger">14:10</span>
-                                    </div>
-                                </div>
-                                <div class="timeline-bar"></div>
-                                <!-- Location E -->
-                                <div class="location-time">
-                                    <p>Location E</p>
-                                    <div class="timeline-point"></div>
-                                    <div class="hstack gap-2">
-                                        <span class="badge bg-secondary">14:30</span>
-                                        <div class="vr"></div>
-                                        <span class="badge status status-green">14:30</span>
-                                    </div>
-                                </div>
-                                <div class="timeline-bar"></div>
-                                <!-- End Point -->
-                                <div class="location-time">
-                                    <p>End Point</p>
-                                    <div class="timeline-point"></div>
-                                    <div class="hstack gap-2">
-                                        <span class="badge status status-green">21:00</span>
-                                    </div>
-                                </div>
+                                <?php endforeach; ?>
                             </div>
                         </div>
                     </div>
