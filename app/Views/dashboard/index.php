@@ -33,7 +33,7 @@
         <?php foreach ($dataObjects as $object): ?>
             <div class="row mb-0">
                 <!-- Column 1: Driver Information -->
-                <div class="col-md-3">
+                <div class="col-md-3 col-lg-2">
                     <div class="card mb-3 bg-secondary text-white">
                         <div class="card-body">
                             <h5 class="card-title">Driver Info</h5>
@@ -45,7 +45,7 @@
                 </div>
 
                 <!-- Column 2: Timeline -->
-                <div class="col-md-9">
+                <div class="col-md-9 col-lg-10">
                     <div class="card mb-0 bg-secondary text-white">
                         <div class="card-body">
                             <div class="timeline mb-0 text-center">
