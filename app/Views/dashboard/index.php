@@ -17,6 +17,10 @@
         float: right; /* Memindahkan waktu ke kanan */
         text-align: right;
     }
+
+    .timeline-bar {
+        margin-right: 10px;
+    }
     </style>
 
     <div class="xcontainer py-4">
@@ -46,6 +50,7 @@
 
                 <!-- Column 2: Timeline -->
                 <div class="col-md-9 col-lg-10">
+                    <div class="table-responsive mb-0">
                     <div class="card mb-0 bg-secondary text-white">
                         <div class="card-body">
                             <div class="timeline mb-0 text-center">
@@ -66,10 +71,11 @@
                                         <span class="badge <?= $badgeStatus; ?> timeline-time"><?= $actualedTime; ?></span>
                                     </div>
                                 </div>
-                                <div class="timeline-bar"></div>
+                                <div class="timeline-bar <?=($shouldHideBadge) ? 'end-point' : ''; ?>"></div>
                                 <?php endforeach; ?>
                             </div>
                         </div>
+                    </div>
                     </div>
                 </div>
             </div>
