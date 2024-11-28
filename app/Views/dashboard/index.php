@@ -1,6 +1,24 @@
 <?= $this->extend('layouts/main') ?>
 
-<?= $this->section('content') ?>    
+<?= $this->section('content') ?>
+    <style>
+    .timeline-item {
+        position: relative;
+        text-align: center;
+    }
+
+    .timeline-time {
+        display: inline-block;
+        margin-top: 5px;
+        font-size: 12px;
+    }
+
+    .end-point .timeline-time {
+        float: right; /* Memindahkan waktu ke kanan */
+        text-align: right;
+    }
+    </style>
+
     <div class="xcontainer py-4">
         <!-- <h1 class="text-center mb-4">Project Anomaly Dashboard</h1>-->
         <!-- Menampilkan error jika ada -->
@@ -32,20 +50,20 @@
                         <div class="card-body">
                             <div class="timeline mb-0 text-center">
                                 <?php foreach ($object['timeline'] as $event): ?>
-                                <div class="timeline-item">
+                                <?php
+                                    $shouldHideBadge = ($event['location'] === 'End Point');
+                                    $scheduledTime = date('H:i', strtotime($event['scheduled_time']));
+                                    $actualedTime = date('H:i', strtotime($event['actual_time']));
+                                    $badgeClass = $shouldHideBadge ? 'd-none' : '';
+                                    $badgeStatus = ($scheduledTime == $actualedTime) ? 'bg-success' : 'bg-danger';
+                                ?>
+                                <div class="timeline-item <?=($shouldHideBadge) ? 'end-point' : ''; ?>">
                                     <p><?= esc($event['location']) ?></p>
                                     <div class="timeline-point"></div>
                                     <div class="hstack gap-2">
-                                    <?php
-                                        $shouldHideBadge = ($event['location'] === 'End Point');
-                                        $scheduledTime = date('H:i', strtotime($event['scheduled_time']));
-                                        $actualedTime = date('H:i', strtotime($event['actual_time']));
-                                        $badgeClass = $shouldHideBadge ? 'd-none' : '';
-                                        $badgeStatus = ($scheduledTime == $actualedTime) ? 'bg-success' : 'bg-danger';
-                                        ?>
                                         <span class="badge bg-secondary <?= $badgeClass; ?>"><?= $scheduledTime; ?></span>
                                         <div class="vr <?= $badgeClass; ?>"></div>
-                                        <span class="badge <?= $badgeStatus; ?>"><?= $actualedTime; ?></span>
+                                        <span class="badge <?= $badgeStatus; ?> timeline-time"><?= $actualedTime; ?></span>
                                     </div>
                                 </div>
                                 <div class="timeline-bar"></div>
